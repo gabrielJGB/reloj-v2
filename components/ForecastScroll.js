@@ -1,14 +1,24 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Day from './Day'
+import { findMinMaxTemperature, sumPrecipitation } from '../utils/helpers'
 
-const ForecastScroll = () => {
+const ForecastScroll = ({ dailyForecast }) => {
+
+
     return (
         <ScrollView horizontal>
             <View style={s.container}>
                 {
-                    ["Hoy", "Mañana", "Sabado 5", "Domingo 6", "Lunes 7", "Martes 8", "Miercoles 9"].map((date,i) => (
-                        <Day key={i} date={date}/>
+                    Array.from({ length: 10 }).map((date, i) => (
+                        <Day
+                            key={i}
+                            date={dailyForecast[i].title.replace("á", "A").replace("é", "E")}
+                            maxTemp={Math.round(findMinMaxTemperature(dailyForecast[i]?.weather).maxTemp.value)}
+                            minTemp={Math.round(findMinMaxTemperature(dailyForecast[i]?.weather).minTemp.value)}
+                            condition={dailyForecast[i].weather[0]["symbol"]["@_name"].replace(" ", "\n")}
+                            rain={sumPrecipitation(dailyForecast[i]?.weather)}
+                        />
                     ))
                 }
             </View>

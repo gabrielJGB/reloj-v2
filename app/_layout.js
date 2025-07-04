@@ -1,11 +1,19 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { Stack, useFocusEffect } from 'expo-router'
 import { DarkTheme, ThemeProvider } from '@react-navigation/native'
+
+import { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 
 const Home = () => {
+
+
+
     return (
         <ThemeProvider value={DarkTheme}>
+            
+            <StatusBar hidden />
+
             <Stack
                 screenOptions={{
                     animation: "slide_from_right",

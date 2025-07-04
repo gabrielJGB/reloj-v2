@@ -1,28 +1,179 @@
 import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CurrentWeather from './CurrentWeather'
 import ForecastScroll from './ForecastScroll'
 import SelectCityModal from './SelectCityModal'
+import { getCity } from '../utils/storage'
+import { fetchXML } from '../utils/fetch'
+import { agruparPorDia, formatearFecha } from '../utils/helpers'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Weather = () => {
 
-    const [city, setCity] = useState(true)
-    const [modalVisible, setModalVisible] = useState(true);
+    const [selectedCity, setSelectedCity] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false);
+    const [loadingCurrent, setLoadingCurrent] = useState(true);
+    const [loadingMeteogram, setLoadingMeteogram] = useState(true);
+    const [error, setError] = useState(false);
+    const [currentForecast, setCurrentForecast] = useState(false)
+    const [dailyForecast, setDailyForecast] = useState(false)
+
+
+    const checkCity = async () => {
+
+        try {
+            const city = await AsyncStorage.getItem('city');
+
+            setLoadingCurrent(true)
+            setLoadingMeteogram(true)
+            if (city != null) {
+
+                setSelectedCity(city);
+
+
+
+            } else {
+                setSelectedCity(false);
+
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+        finally {
+            setLoadingMeteogram(false)
+            setLoadingCurrent(false)
+        }
+
+    };
+
+
+    const _fetchCityWeather = () => {
+        if (selectedCity != null) {
+
+
+            setLoadingCurrent(true)
+            getCity()
+                .then(city => {
+                    console.log("saved:", selectedCity)
+                    console.log("Fetching current weather... ", new Date());
+                    const nowUrl = `https://meteobahia.com.ar/scripts/xml/now-${city.code}.xml?_=${new Date().getTime()}`
+                    setLoadingCurrent(true)
+                    fetchXML(nowUrl)
+                        .then(res => {
+                            setCurrentForecast(res.response)
+                            console.log("res.response: ", res.response)
+                        })
+                        .finally(() => { setLoadingCurrent(false) })
+
+                })
+                .finally(() => { setLoadingCurrent(false) })
+        }
+    }
+
+
+
+    useEffect(() => {
+        if (selectedCity) {
+            setLoadingCurrent(true)
+            console.log("Fetching meteogram")
+            const meteogramUrl = `https://meteobahia.com.ar/scripts/meteogramas/${selectedCity.code}.xml`
+            fetchXML(meteogramUrl)
+                .then(res => {
+
+                    const data = res.weatherdata
+                    const agrupadosPorDia = agruparPorDia(data.forecast.tabular.time)
+                    const resultadoFinal = Object.values(agrupadosPorDia)
+
+                    const x = resultadoFinal.map((day, i) => {
+                        return {
+                            weather: day,
+                            title: formatearFecha(day[0]["@_from"]),
+                            title2: formatearFecha(day[0]["@_from"]).slice(0, 3).replace("Mañ", "Mañana"),
+                            date: day[0]["@_from"],
+                        }
+                    })
+
+                    x.pop()
+                    setDailyForecast(x)
+
+
+                })
+                .catch(error => {
+                    setError(error.message)
+                    console.log(error)
+                })
+                .finally(() => setLoadingMeteogram(false))
+        }
+    }, [selectedCity])
+
+
+
+
+    useEffect(() => {
+
+        _fetchCityWeather()
+        let interval = setInterval(() => {
+            _fetchCityWeather()
+        }, 1000 * 60 * 10);
+        return () => clearInterval(interval)
+
+    }, [selectedCity])
+
+
+    useEffect(() => {
+
+        getCity().then(res => setSelectedCity(res))
+
+    }, [])
+
+    // if (error)
+    //     return <Text style={s.error}>No se pudo obtener el clima</Text>
+
 
     return (
         <View style={s.container}>
-            <SelectCityModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+
+
+            <SelectCityModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                selectedCity={selectedCity}
+                setSelectedCity={setSelectedCity}
+                loadingCurrent={loadingCurrent}
+                setLoadingCurrent={setLoadingCurrent}
+                currentForecast={currentForecast}
+                setCurrentForecast={setCurrentForecast}
+            />
+
+
+
             {
-                city ?
+                selectedCity ?
                     <>
-                        <CurrentWeather modalVisible={modalVisible} setModalVisible={setModalVisible}/>
-                        <ForecastScroll />
+                        {
+                            !loadingCurrent &&
+                            <CurrentWeather
+                                modalVisible={modalVisible}
+                                setModalVisible={setModalVisible}
+                                currentForecast={currentForecast}
+                            />
+                        }
+
+                        {
+                            !loadingMeteogram &&
+                            <ForecastScroll
+                                dailyForecast={dailyForecast}
+                            />
+                        }
                     </>
                     :
-                    <TouchableNativeFeedback onPress={() => { }}>
+                    <TouchableNativeFeedback onPress={() => { setModalVisible(true) }}>
                         <Text style={s.selectButton}>Seleccionar ubicación</Text>
                     </TouchableNativeFeedback>
             }
+
+
         </View>
     )
 }
@@ -34,7 +185,7 @@ const s = StyleSheet.create({
 
         display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         alignItems: "center",
         width: "100%",
         // backgroundColor: "#2c2c2c",
@@ -48,6 +199,13 @@ const s = StyleSheet.create({
         color: "red",
         fontSize: 28,
         padding: 22,
+    },
+    error: {
+        color: "red",
+        textAlign: "center",
+        fontSize: 13,
+        fontFamily: 'digital-7-mono-italic',
+        margin: "auto",
     }
 
 })

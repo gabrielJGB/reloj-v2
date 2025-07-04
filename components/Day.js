@@ -1,20 +1,25 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { Icon } from 'react-native-paper'
 
-const Day = ({date}) => {
+const Day = ({ date, maxTemp, rain, minTemp, condition }) => {
 
     return (
         <View style={s.container}>
-            <Text style={[s.text, s.date]}>{date}</Text>
-            <View style={s.numbers}>
-                <Text style={[s.text, s.temp]}>-2°</Text>
-                <Text style={[s.text, s.slash]}>/</Text>
-                <Text style={[s.text, s.temp]}>22°</Text>
+            <View style={s.header}>
+                <Text style={[s.text, s.date]}>{date}</Text>
+                { rain >0 && <Icon source={"water"} color="aqua" size={8} /> }
             </View>
 
-            <Text numberOfLines={2} style={[s.text, s.description]}>Despejado. Ventoso</Text>
 
-        </View>
+            <View style={s.numbers}>
+                <Text style={[s.text, s.temp]}>{maxTemp}°</Text>
+                <Text style={[s.text, s.slash]}>/</Text>
+                <Text style={[s.text, s.temp, { color: "rgb(100,100,170)", textShadowColor: "rgb(100,100,170)" }]}>{minTemp}°</Text>
+            </View>
+
+            <Text numberOfLines={2} style={[s.text, s.condition]}>{condition} {rain>0 &&  `\n${rain} mm` } </Text>
+
+        </View >
     )
 }
 
@@ -24,12 +29,15 @@ const s = StyleSheet.create({
     container: {
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        gap:6,
+        justifyContent: "flex-start",
+        gap: 13,
+        alignSelf: "stretch",
+
+        borderRightWidth: 2,
         alignItems: "center",
-        paddingRight:5,
-        borderRightWidth:1,
-        borderColor:"red",
+        paddingRight: 10,
+        paddingLeft: 0,
+        borderColor: "#53000f",
     },
     numbers: {
         display: "flex",
@@ -44,17 +52,22 @@ const s = StyleSheet.create({
         textShadowRadius: 17,
     },
     date: {
-        fontSize: 27
+        fontSize: 24
     },
     temp: {
-        fontSize: 42
+        fontSize: 40
     },
     slash: {
         fontSize: 20
     },
-    description: {
-        maxWidth: 130,
+    condition: {
+        maxWidth: 120,
         textAlign: "center",
         fontSize: 18
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 3
     }
 })

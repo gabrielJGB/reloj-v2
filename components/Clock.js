@@ -1,7 +1,7 @@
 
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
 
 const Clock = () => {
 
@@ -9,6 +9,7 @@ const Clock = () => {
   const [minutes, setMinutes] = useState('--')
   const [seconds, setSeconds] = useState('--')
 
+  const width = Dimensions.get("window").width / 2.3
 
   useFocusEffect(useCallback(() => {
 
@@ -31,10 +32,10 @@ const Clock = () => {
   return (
     <View style={s.clock}>
 
-      <Text style={[s.numbers, { color: "red", textShadowColor: "red" }]}>{hours}</Text>
-      <Text style={[s.dots, { color: "red" , textShadowColor: "red" }]}>:</Text>
-      <Text style={[s.numbers, { color: "red", textShadowColor: "red" }]}>{minutes}</Text>
-      <Text style={[s.seconds, { color: "red", textShadowColor: "red" }]}>{seconds}</Text>
+      <Text style={[s.numbers, { fontSize: width, lineHeight: width * 0.7 }]}>{hours}</Text>
+      <Text style={[s.dots, { fontSize: width/2, lineHeight: width * 0.7 }]}>:</Text>
+      <Text style={[s.numbers, { fontSize: width, lineHeight: width * 0.7 }]}>{minutes}</Text>
+      <Text style={[s.seconds, { fontSize: width / 2.6, lineHeight: (width / 2) * 0.7 }]}>{seconds}</Text>
 
     </View>
   )
@@ -45,46 +46,46 @@ export default Clock
 const s = StyleSheet.create({
 
   clock: {
-    textAlign: "center",
-    width: "100%",
     display: "flex",
     flexDirection: "row",
-    alignItems: 'center',
+
+    // backgroundColor: "blue",
+    // textAlign: "center",
     justifyContent: 'center',
-    paddingRight: 20,
+    // alignItems:"baseline"
     // backgroundColor:"#1c1c1c"
   },
   numbers: {
 
+    // backgroundColor: "green",
     color: "red",
-    transform: [{ rotate: '0deg' }],
-    textAlign: "center",
+    // transform: [{ rotate: '0deg' }],
+    // textAlign: "center",
     fontFamily: 'digital-7-mono-italic',
+    color: "red",
     textShadowColor: 'red',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 17,
-    fontSize: 310,
-    lineHeight:250
+    // textAlignVertical:"bottom",
   },
   seconds: {
-
-    fontSize: 110,
-    paddingLeft: 10,
-    paddingBottom: 10,
+    // backgroundColor: "orange",
+    // paddingLeft: 10,
+    // paddingBottom: 10,
     alignSelf: "flex-end",
     color: "red",
     transform: [{ rotate: '0deg' }],
-    textAlign: "center",
+    // textAlign: "center",
     fontFamily: 'digital-7-mono-italic',
     textShadowColor: 'red',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 7
   },
   dots: {
-    textAlign: "center",
-    fontSize: 120,
+    // textAlign: "center",
+    // fontSize: 120,
     color: "red",
-    paddingHorizontal: 12
+    // paddingHorizontal: 12
   },
- 
+
 });

@@ -1,15 +1,30 @@
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native'
-import React from 'react'
+import * as Brightness from 'expo-brightness';
 
-const Buttons = () => {
+const Buttons = ({ brightness, setBrightness }) => {
+
+
+
+    const changeBrightness = async (delta) => {
+        let newBrightness = brightness + delta;
+
+
+        newBrightness = Math.min(1, Math.max(0, newBrightness));
+
+        await Brightness.setBrightnessAsync(newBrightness);
+        setBrightness(newBrightness);
+    };
+
+
     return (
         <View style={s.container}>
 
-            <TouchableNativeFeedback onPress={() => {  }}>
+            <TouchableNativeFeedback onPress={() => { changeBrightness(-0.1) }}>
                 <View style={s.brightnessButton}></View>
             </TouchableNativeFeedback>
 
-            <TouchableNativeFeedback onPress={() => { }}>
+            <TouchableNativeFeedback onPress={() => { changeBrightness(0.1) }}>
                 <View style={s.brightnessButton}></View>
             </TouchableNativeFeedback>
 
@@ -27,7 +42,7 @@ const s = StyleSheet.create({
         position: "absolute",
         top: 0,
         left: 0,
-        
+
     },
     brightnessButton: {
         width: "50%",

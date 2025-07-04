@@ -24,13 +24,20 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1c1c1c"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.gabriel_1.relojv2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6f56b7f2-61d0-43d7-847e-3e15cb13ec76"
+      }
+    }
   }
 }
