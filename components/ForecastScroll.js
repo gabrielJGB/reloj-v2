@@ -4,7 +4,7 @@ import Day from './Day'
 import { findMinMaxTemperature, sumPrecipitation } from '../utils/helpers'
 import DayModalOverview from './DayModalOverview'
 
-const ForecastScroll = ({ dailyForecast,setDayModalVisible,selectedDayForecast,setSelectedDayForecast }) => {
+const ForecastScroll = ({ dailyForecast,setDayModalVisible,setSelectedDayForecast,setSelectedDayIndex }) => {
  
 
     return (
@@ -17,7 +17,7 @@ const ForecastScroll = ({ dailyForecast,setDayModalVisible,selectedDayForecast,s
                             key={i}
                             dailyForecast={dailyForecast}
                             setDayModalVisible={setDayModalVisible}
-                            setSelectedDayForecast={setSelectedDayForecast}
+                            setSelectedDayIndex={setSelectedDayIndex}
                             index={i}
                             
                         />

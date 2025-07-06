@@ -3,13 +3,26 @@ import React, { useState } from 'react'
 import { Icon, IconButton } from 'react-native-paper'
 import { LineChart } from 'react-native-gifted-charts'
 import { Image } from 'expo-image'
+import { findMinMaxTemperature } from '../utils/helpers'
 
 
 
 
-const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayForecast }) => {
+const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayIndex, setSelectedDayIndex, dailyForecast }) => {
 
-    const { date, forecast, maxTemp, minTemp, index } = selectedDayForecast
+    const ICON_SIZE = 50
+    const forecast = dailyForecast[selectedDayIndex]?.weather
+
+
+    if (forecast === undefined)
+        return <View></View>
+
+
+    const date = dailyForecast[selectedDayIndex]?.title.replace("á", "A").replace("é", "E")
+    const maxTemp = Math.round(findMinMaxTemperature(dailyForecast[selectedDayIndex]?.weather).maxTemp.value)
+    const minTemp = Math.round(findMinMaxTemperature(dailyForecast[selectedDayIndex]?.weather).minTemp.value)
+
+
     const graphWidth = Dimensions.get("window").width - 50
 
 
@@ -45,7 +58,7 @@ const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayFore
                 dataPointText: `${String(Math.round(elem.temperature["@_value"]))}°`,
             },
             rain: {
-                value: parseFloat(elem.precipitation["@_value"]) / 3,
+                value: parseFloat(elem.precipitation["@_value"]) / 5,
                 dataPointText: parseFloat(elem.precipitation["@_value"]) === 0 ? "" : parseFloat(elem.precipitation["@_value"]) + "mm",
             }
 
@@ -57,10 +70,10 @@ const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayFore
 
 
 
-    if (forecast === undefined)
-        return <View></View>
+
 
     return (
+
 
         <Modal
             animationType="slide"
@@ -71,14 +84,15 @@ const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayFore
         >
             <TouchableNativeFeedback onPress={() => { setDayModalVisible(!dayModalVisible) }}>
                 <View style={s.container}>
+
                     <View style={s.header}>
 
                         <IconButton
                             icon={"chevron-left"}
-                            size={30}
+                            size={ICON_SIZE}
                             iconColor={"white"}
-                            onPress={() => { }}
-                        />
+                            onPress={() => { setSelectedDayIndex(prev => prev > 0 ? prev - 1 : 0) }} />
+
 
                         <Text style={[s.text, s.date]}>{date}</Text>
                         <View style={s.tempContainer}>
@@ -87,14 +101,17 @@ const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayFore
                             <Text style={[s.temp, s.minTemp]}>{minTemp}°</Text>
                         </View>
 
-                        <IconButton 
-                        icon={"chevron-right"} 
-                        size={30} 
-                        iconColor={"white"} 
-                        onPress={() => { }} />
+                        <IconButton
+                            icon={"chevron-right"}
+                            size={ICON_SIZE}
+                            iconColor={"white"}
+                            onPress={() => { setSelectedDayIndex(prev => prev < 11 ? prev + 1 : prev) }} />
 
-                        <IconButton icon={"close-box"} iconColor="white" size={35} onPress={() => { setDayModalVisible(!dayModalVisible) }} />
+                        {/* <IconButton icon={"close-box"} iconColor="white" size={35} onPress={() => { setDayModalVisible(!dayModalVisible) }} /> */}
                     </View>
+
+
+                    {/* BORRAR <Text style={{ color: "white" }}>{selectedDayIndex}</Text> */}
 
                     <LineChart
                         isAnimated
@@ -170,7 +187,7 @@ const s = StyleSheet.create({
         borderColor: "rgb(70,70,70)",
         borderWidth: 1,
         borderRadius: 10,
-        backgroundColor: 'rgba(0,0,0,0.93)',
+        backgroundColor: 'rgba(0,0,0,0.9)',
         width: "100%",
         height: "100%",
         position: "absolute",

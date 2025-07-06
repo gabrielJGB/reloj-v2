@@ -3,7 +3,7 @@ import { Icon, Dialog, TouchableRipple } from 'react-native-paper'
 import { findMinMaxTemperature, sumPrecipitation } from '../utils/helpers'
 
 
-const Day = ({ dailyForecast, setSelectedDayForecast,setDayModalVisible, index }) => {
+const Day = ({ dailyForecast,setSelectedDayIndex, setSelectedDayForecast,setDayModalVisible, index }) => {
 
     const date =  dailyForecast[index].title.replace("á", "A").replace("é", "E") 
     const maxTemp =  Math.round(findMinMaxTemperature(dailyForecast[index]?.weather).maxTemp.value) 
@@ -22,9 +22,10 @@ const Day = ({ dailyForecast, setSelectedDayForecast,setDayModalVisible, index }
             rippleColor={"rgba(255,0,0,0.3)"}
             style={s.container}
             onPress={() => {
-                setSelectedDayForecast({
-                    forecast, maxTemp, minTemp, date, rain, index
-                })
+                // setSelectedDayForecast({
+                //     forecast, maxTemp, minTemp, date, rain, index
+                // })
+                setSelectedDayIndex(index)
                 setDayModalVisible(prev => !prev)
 
             }}>
@@ -63,6 +64,7 @@ const s = StyleSheet.create({
         minWidth: 120,
         borderRightWidth: 2,
         alignItems: "center",
+        paddingTop:2,
         paddingRight: 10,
         paddingLeft: 10,
         borderColor: "#53000f",

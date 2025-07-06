@@ -13,7 +13,7 @@ const Weather = ({selectedDayIndex, setSelectedDayIndex}) => {
 
     const [selectedCity, setSelectedCity] = useState(false)
     const [modalVisible, setModalVisible] = useState(false);
-    const [dayModalVisible, setDayModalVisible] = useState(true)
+    const [dayModalVisible, setDayModalVisible] = useState(false)
     const [loadingCurrent, setLoadingCurrent] = useState(true);
     const [loadingMeteogram, setLoadingMeteogram] = useState(true);
     const [error, setError] = useState(false);
@@ -150,8 +150,9 @@ const Weather = ({selectedDayIndex, setSelectedDayIndex}) => {
             <DayModalOverview
                 dayModalVisible={dayModalVisible}
                 setDayModalVisible={setDayModalVisible}
-                selectedDayForecast={selectedDayForecast}
-                setSelectedDayForecast={setSelectedDayForecast}
+                selectedDayIndex={selectedDayIndex}
+                setSelectedDayIndex={setSelectedDayIndex}
+                dailyForecast={dailyForecast}
             />
 
             {
@@ -176,7 +177,7 @@ const Weather = ({selectedDayIndex, setSelectedDayIndex}) => {
                                 <ForecastScroll
                                     dailyForecast={dailyForecast}
                                     setDayModalVisible={setDayModalVisible}
-                                    setSelectedDayForecast={setSelectedDayForecast}
+                                    setSelectedDayIndex={setSelectedDayIndex}
                                 />
                         }
                     </>
