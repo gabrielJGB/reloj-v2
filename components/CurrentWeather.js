@@ -6,8 +6,8 @@ const IMG_SIZE = 62
 
 const CurrentWeather = ({ modalVisible, setModalVisible, currentForecast }) => {
 
-    const fontSize = 150
-    const lineHeight = fontSize * 0.8
+    const fontSize = 160
+    const lineHeight = fontSize * 0.72
     const temp = currentForecast?.cc?.temp
     const icon = currentForecast?.cc?.icon
     const condition = currentForecast?.cc?.condition
@@ -53,9 +53,11 @@ const CurrentWeather = ({ modalVisible, setModalVisible, currentForecast }) => {
                         <Text style={{ fontSize: 85, lineHeight: 70, color: "red", textShadowColor: 'red' }}>°</Text>
                     </View>
                 </View>
-                <Text style={s.condition}>
-                    {time} - {condition}
-                </Text>
+
+                <View style={s.conditionContainer}>
+                    <Text style={s.condition}>{condition}</Text>
+                    <Text style={s.condition}>Actualizado a las {time}</Text>
+                </View>
             </View>
         </TouchableNativeFeedback>
     )
@@ -67,6 +69,7 @@ const s = StyleSheet.create({
     mainContainer: {
         display: "flex",
         flexDirection: "column",
+        gap: 0
 
     },
     container: {
@@ -78,19 +81,22 @@ const s = StyleSheet.create({
         // backgroundColor:"orange"
     },
     webviewContainer: {
-        minHeight: 90
+        minHeight: 90,
+        backgroundColor: "orange"
     },
     webview: {
-        width: IMG_SIZE + 38,
+        width: IMG_SIZE + 44,
         height: IMG_SIZE,
         backgroundColor: "transparent",
         minHeight: 90,
+        
 
     },
     tempCont: {
         display: "flex",
         flexDirection: "row",
         alignItems: "flex-start",
+        
     },
     temp: {
         fontFamily: 'digital-7-mono-italic',
@@ -98,15 +104,24 @@ const s = StyleSheet.create({
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 17,
         color: "red",
-        fontSize: 160,
-        lineHeight: 130,
-        // backgroundColor:"yellow"
+        
     },
-    condition: { color: "white", fontSize: 15, fontFamily: 'digital-7-mono-italic', paddingLeft: 18, paddingBottom: 5, color: "red", textAlign: "left" }
-    // icon: {
-    //     width: 90,
-    //     height: 90,
-    //     borderRadius: 90,
-    //     backgroundColor: "blue"
-    // }
+    condition: {
+        color: "white",
+        fontSize: 11,
+        fontFamily: 'Arial',
+        paddingLeft: 12,
+        color: "red",
+        textAlign: "left"
+    },
+    conditionContainer:{
+        display:"flex",
+        flexDirection:"column",
+        gap:0,
+        justifyContent:"flex-start",
+        alignItems:"flex-start",
+        marginTop:2
+
+    }
+
 })

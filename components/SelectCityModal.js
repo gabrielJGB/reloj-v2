@@ -86,7 +86,7 @@ const SelectCityModal = ({ modalVisible, setModalVisible, selectedCity, setSelec
 
                             {
                                 selectedCity != null &&
-                                <Text style={{ color: "black", fontWeight: "500", fontSize: 16, lineHeight: 34 }}>
+                                <Text style={{ color: "white", fontWeight: "500", fontSize: 16, lineHeight: 34 }}>
                                     Ubicación actual: {selectedCity.nombre}
                                 </Text>
                             }
@@ -126,7 +126,7 @@ const SelectCityModal = ({ modalVisible, setModalVisible, selectedCity, setSelec
                 <Button
                     onPress={() => setModalVisible(false)}
                     style={s.closeButton}
-                    buttonColor='rgb(120,0,0)'
+                    buttonColor='rgb(0,0,0)'
                     textColor='white'
                 >Cerrar</Button>
 
@@ -148,7 +148,7 @@ const s = StyleSheet.create({
         borderWidth: 1,
         flex: 1,
         borderRadius: 10,
-        backgroundColor: 'rgba(255,255,255,0.8)',
+        backgroundColor: 'rgba(0,0,0,0.9)',
         width: "90%",
         margin: "auto"
 
@@ -203,7 +203,7 @@ const s = StyleSheet.create({
         borderRadius: 6,
         paddingHorizontal: 7,
         paddingVertical: 15,
-        backgroundColor: "#1c1c1c"
+        backgroundColor: "rgb(200,0,0)"
     },
     resultText: {
         fontWeight: "500",
@@ -217,6 +217,8 @@ const s = StyleSheet.create({
     },
     closeButton: {
         padding: 5,
+        borderTopWidth:1,
+        borderColor:"#4c4c4c",
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10,
         borderTopEndRadius: 0,

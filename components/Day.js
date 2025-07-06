@@ -1,25 +1,52 @@
-import { StyleSheet, Text, View } from 'react-native'
-import { Icon } from 'react-native-paper'
+import { Alert, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native'
+import { Icon, Dialog, TouchableRipple } from 'react-native-paper'
+import { findMinMaxTemperature, sumPrecipitation } from '../utils/helpers'
 
-const Day = ({ date, maxTemp, rain, minTemp, condition }) => {
+
+const Day = ({ dailyForecast, setSelectedDayForecast,setDayModalVisible, index }) => {
+
+    const date =  dailyForecast[index].title.replace("á", "A").replace("é", "E") 
+    const maxTemp =  Math.round(findMinMaxTemperature(dailyForecast[index]?.weather).maxTemp.value) 
+    const minTemp =  Math.round(findMinMaxTemperature(dailyForecast[index]?.weather).minTemp.value) 
+    const condition =  dailyForecast[index].weather[0]["symbol"]["@_name"].replace(" ", "\n") 
+    const rain =  sumPrecipitation(dailyForecast[index]?.weather) 
+    const forecast =  dailyForecast[index].weather 
+
+
+    
 
     return (
-        <View style={s.container}>
-            <View style={s.header}>
-                <Text style={[s.text, s.date]}>{date}</Text>
-                { rain >0 && <Icon source={"water"} color="aqua" size={8} /> }
-            </View>
+
+        <TouchableRipple
+            unstable_pressDelay={50}
+            rippleColor={"rgba(255,0,0,0.3)"}
+            style={s.container}
+            onPress={() => {
+                setSelectedDayForecast({
+                    forecast, maxTemp, minTemp, date, rain, index
+                })
+                setDayModalVisible(prev => !prev)
+
+            }}>
+
+            <>
+
+                <View style={s.header}>
+                    <Text style={[s.text, s.date]}>{date}</Text>
+                    {rain > 0 && <Icon source={"water"} color="aqua" size={8} />}
+                </View>
 
 
-            <View style={s.numbers}>
-                <Text style={[s.text, s.temp]}>{maxTemp}°</Text>
-                <Text style={[s.text, s.slash]}>/</Text>
-                <Text style={[s.text, s.temp, { color: "rgb(100,100,170)", textShadowColor: "rgb(100,100,170)" }]}>{minTemp}°</Text>
-            </View>
+                <View style={s.numbers}>
+                    <Text style={[s.text, s.temp]}>{maxTemp}°</Text>
+                    <Text style={[s.text, s.slash]}>/</Text>
+                    <Text style={[s.text, s.temp, { color: "rgb(100,100,170)", textShadowColor: "rgb(100,100,170)" }]}>{minTemp}°</Text>
+                </View>
 
-            <Text numberOfLines={2} style={[s.text, s.condition]}>{condition} {rain>0 &&  `\n${rain} mm` } </Text>
+                <Text numberOfLines={3} style={[s.text, s.condition]}>{condition} {rain > 0 && `\n${rain.toFixed(1)} mm`} </Text>
 
-        </View >
+            </ >
+        </TouchableRipple>
     )
 }
 
@@ -30,13 +57,14 @@ const s = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
-        gap: 13,
+        gap: 10,
         alignSelf: "stretch",
-
+        // backgroundColor:"blue",
+        minWidth: 120,
         borderRightWidth: 2,
         alignItems: "center",
         paddingRight: 10,
-        paddingLeft: 0,
+        paddingLeft: 10,
         borderColor: "#53000f",
     },
     numbers: {
@@ -63,7 +91,9 @@ const s = StyleSheet.create({
     condition: {
         maxWidth: 120,
         textAlign: "center",
-        fontSize: 18
+        fontSize: 14,
+        fontStyle: "italic",
+        fontFamily: "Arial"
     },
     header: {
         flexDirection: "row",

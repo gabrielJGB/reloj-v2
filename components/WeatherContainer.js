@@ -7,16 +7,19 @@ import { getCity } from '../utils/storage'
 import { fetchXML } from '../utils/fetch'
 import { agruparPorDia, formatearFecha } from '../utils/helpers'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import DayModalOverview from './DayModalOverview'
 
-const Weather = () => {
+const Weather = ({selectedDayIndex, setSelectedDayIndex}) => {
 
     const [selectedCity, setSelectedCity] = useState(false)
     const [modalVisible, setModalVisible] = useState(false);
+    const [dayModalVisible, setDayModalVisible] = useState(true)
     const [loadingCurrent, setLoadingCurrent] = useState(true);
     const [loadingMeteogram, setLoadingMeteogram] = useState(true);
     const [error, setError] = useState(false);
     const [currentForecast, setCurrentForecast] = useState(false)
     const [dailyForecast, setDailyForecast] = useState(false)
+    const [selectedDayForecast, setSelectedDayForecast] = useState(false)
 
 
     const checkCity = async () => {
@@ -27,11 +30,7 @@ const Weather = () => {
             setLoadingCurrent(true)
             setLoadingMeteogram(true)
             if (city != null) {
-
                 setSelectedCity(city);
-
-
-
             } else {
                 setSelectedCity(false);
 
@@ -127,8 +126,9 @@ const Weather = () => {
 
     }, [])
 
-    // if (error)
-    //     return <Text style={s.error}>No se pudo obtener el clima</Text>
+    if (error)
+        return <Text style={s.error} onPress={() => { setSelectedCity(selectedCity) }}>No se pudo obtener el clima</Text>
+
 
 
     return (
@@ -147,24 +147,37 @@ const Weather = () => {
             />
 
 
+            <DayModalOverview
+                dayModalVisible={dayModalVisible}
+                setDayModalVisible={setDayModalVisible}
+                selectedDayForecast={selectedDayForecast}
+                setSelectedDayForecast={setSelectedDayForecast}
+            />
 
             {
                 selectedCity ?
                     <>
                         {
-                            !loadingCurrent &&
-                            <CurrentWeather
-                                modalVisible={modalVisible}
-                                setModalVisible={setModalVisible}
-                                currentForecast={currentForecast}
-                            />
+                            loadingCurrent ?
+
+                                <Text style={s.loading}>Cargando...</Text>
+                                :
+                                <CurrentWeather
+                                    modalVisible={modalVisible}
+                                    setModalVisible={setModalVisible}
+                                    currentForecast={currentForecast}
+                                />
                         }
 
                         {
-                            !loadingMeteogram &&
-                            <ForecastScroll
-                                dailyForecast={dailyForecast}
-                            />
+                            loadingMeteogram ?
+                                <Text style={s.loading}>Cargando...</Text>
+                                :
+                                <ForecastScroll
+                                    dailyForecast={dailyForecast}
+                                    setDayModalVisible={setDayModalVisible}
+                                    setSelectedDayForecast={setSelectedDayForecast}
+                                />
                         }
                     </>
                     :
@@ -204,8 +217,14 @@ const s = StyleSheet.create({
         color: "red",
         textAlign: "center",
         fontSize: 13,
-        fontFamily: 'digital-7-mono-italic',
-        margin: "auto",
+        fontFamily: 'Arial',
+
+    },
+    loading: {
+        color: "red",
+        fontSize: 12,
+        textAlign: "center",
+        width: 105
     }
 
 })

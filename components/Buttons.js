@@ -46,9 +46,9 @@ const s = StyleSheet.create({
     },
     brightnessButton: {
         width: "50%",
-        height: "100%",
         borderRadius: 0,
-        paddingVertical: 120,
+        paddingVertical: 96,
+        // backgroundColor:"rgba(200,0,0,0.2)"
     },
     brightness: {
         position: "absolute",

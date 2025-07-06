@@ -2,24 +2,26 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Day from './Day'
 import { findMinMaxTemperature, sumPrecipitation } from '../utils/helpers'
+import DayModalOverview from './DayModalOverview'
 
-const ForecastScroll = ({ dailyForecast }) => {
-
+const ForecastScroll = ({ dailyForecast,setDayModalVisible,selectedDayForecast,setSelectedDayForecast }) => {
+ 
 
     return (
         <ScrollView horizontal>
             <View style={s.container}>
+                
                 {
-                    Array.from({ length: 10 }).map((date, i) => (
-                        <Day
+                    Array.from({ length: 10 }).map((date, i) => {
+                        return dailyForecast[i].title != "Ayer" && <Day
                             key={i}
-                            date={dailyForecast[i].title.replace("á", "A").replace("é", "E")}
-                            maxTemp={Math.round(findMinMaxTemperature(dailyForecast[i]?.weather).maxTemp.value)}
-                            minTemp={Math.round(findMinMaxTemperature(dailyForecast[i]?.weather).minTemp.value)}
-                            condition={dailyForecast[i].weather[0]["symbol"]["@_name"].replace(" ", "\n")}
-                            rain={sumPrecipitation(dailyForecast[i]?.weather)}
+                            dailyForecast={dailyForecast}
+                            setDayModalVisible={setDayModalVisible}
+                            setSelectedDayForecast={setSelectedDayForecast}
+                            index={i}
+                            
                         />
-                    ))
+                    })
                 }
             </View>
         </ScrollView>
@@ -33,6 +35,6 @@ const s = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 10
+        // gap: 10
     },
 })
