@@ -140,7 +140,7 @@ const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayInde
                         data3={tempData.map(e => (e.rain))}
                         animateTogether
                         curved
-                        curvature={0.1}
+                        curvature={0.2}
                         textColor='white'
                         zIndex1={10}
                         zIndex2={5}
@@ -152,7 +152,7 @@ const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayInde
                         adjustToWidth
                         lineGradient
                         lineGradientStartColor='#ed0c0c'
-                        lineGradientEndColor='#00aaff'
+                        lineGradientEndColor='#00c3ff'
                         rulesColor={"rgb(40,40,40)"}
                         xAxisLabelTextStyle={{ color: "white", fontSize: 11 }}
                         yAxisColor="rgb(50,50,50)"
@@ -187,7 +187,7 @@ const s = StyleSheet.create({
         borderColor: "rgb(70,70,70)",
         borderWidth: 1,
         borderRadius: 10,
-        backgroundColor: 'rgba(0,0,0,0.9)',
+        backgroundColor: 'rgba(0,0,0,0.94)',
         width: "100%",
         height: "100%",
         position: "absolute",
@@ -228,8 +228,8 @@ const s = StyleSheet.create({
 
     },
     minTemp: {
-        color: "rgb(100,100,170)",
-        textShadowColor: "rgb(100,100,170)"
+        color: "rgb(80, 134, 184)",
+        textShadowColor: "rgb(80, 134, 184)",
     },
     maxTemp: {
         color: "rgb(255,0,0)",

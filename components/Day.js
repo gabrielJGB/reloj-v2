@@ -41,7 +41,7 @@ const Day = ({ dailyForecast,setSelectedDayIndex, setSelectedDayForecast,setDayM
                 <View style={s.numbers}>
                     <Text style={[s.text, s.temp]}>{maxTemp}°</Text>
                     <Text style={[s.text, s.slash]}>/</Text>
-                    <Text style={[s.text, s.temp, { color: "rgb(100,100,170)", textShadowColor: "rgb(100,100,170)" }]}>{minTemp}°</Text>
+                    <Text style={[s.text, s.temp, { color: "rgb(80, 134, 184)",textShadowColor: "rgb(80, 134, 184)", }]}>{minTemp}°</Text>
                 </View>
 
                 <Text numberOfLines={3} style={[s.text, s.condition]}>{condition} {rain > 0 && `\n${rain.toFixed(1)} mm`} </Text>
