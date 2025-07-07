@@ -45,7 +45,9 @@ const s = StyleSheet.create({
 
     },
     brightnessButton: {
-        width: "50%",
+        borderWidth:1,
+        borderColor:"rgba(200,0,0,0.3)",
+        width: "46%",
         borderRadius: 0,
         paddingVertical: 96,
         // backgroundColor:"rgba(200,0,0,0.2)"

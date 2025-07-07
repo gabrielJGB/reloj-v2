@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import CurrentBrightness from '../components/CurrentBrightness';
 import * as Brightness from 'expo-brightness';
 import CurrentBattery from '../components/CurrentBattery';
+import { IconButton } from 'react-native-paper';
 
 
 const Home = () => {
@@ -16,6 +17,7 @@ const Home = () => {
     
     const [brightness, setBrightness] = useState(1);
     const [selectedDayIndex,setSelectedDayIndex] = useState(0);
+    const [serverModalVisible,setServerModalVisible] = useState(true)
 
 
     const [loaded] = useFonts({
@@ -67,6 +69,8 @@ const Home = () => {
             <View style={s.information}>
                 <CurrentBrightness brightness={brightness} />
                 <CurrentBattery />
+                <IconButton icon={"wifi-off"} size={25} iconColor='rgb(50,50,50)' rippleColor={"red"} onPress={()=>{}} />
+                    {/* wifi-off / wifi-sync */}
             </View>
 
             <Buttons brightness={brightness} setBrightness={setBrightness} />
