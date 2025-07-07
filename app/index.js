@@ -10,14 +10,18 @@ import CurrentBrightness from '../components/CurrentBrightness';
 import * as Brightness from 'expo-brightness';
 import CurrentBattery from '../components/CurrentBattery';
 import { IconButton } from 'react-native-paper';
+import ServerModal from '../components/ServerModal';
 
 
 const Home = () => {
 
-    
+
     const [brightness, setBrightness] = useState(1);
-    const [selectedDayIndex,setSelectedDayIndex] = useState(0);
-    const [serverModalVisible,setServerModalVisible] = useState(true)
+    const [selectedDayIndex, setSelectedDayIndex] = useState(0);
+    const [serverModalVisible, setServerModalVisible] = useState(false)
+    const [serverIP, setServerIP] = useState("192.168.100.28")
+    const [serverConnected, setServerConnected] = useState(false)
+    const [serverStatus, setServerStatus] = useState("")
 
 
     const [loaded] = useFonts({
@@ -34,7 +38,7 @@ const Home = () => {
                 ScreenOrientation.OrientationLock.LANDSCAPE
             );
         }
-        
+
         setRotate()
     }, [])
 
@@ -56,6 +60,52 @@ const Home = () => {
     }, []);
 
 
+    useEffect(() => {
+        connectWebSocket();
+    }, [serverIP, serverConnected]);
+
+
+
+    let ws;
+
+    const connectWebSocket = () => {
+
+        ws = new WebSocket("ws://" + serverIP + ':8080');
+
+
+
+        ws.onopen = (e) => {
+
+            console.log('Conectado al servidor');
+            setServerStatus('✅ Conectado al servidor');
+            setServerConnected(true)
+        };
+
+
+        ws.onmessage = (event) => {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'brightness') {
+                Brightness.setBrightnessAsync(msg.value);
+                setBrightness(msg.value)
+            }
+        };
+
+        ws.onclose = (e) => {
+
+
+            console.log('🔁 Conexión cerrada, intentando reconectar...');
+            setServerStatus('Conexión cerrada, intentando reconectar...')
+            setTimeout(connectWebSocket, 3000); // Reintenta en 3 segundos
+
+        };
+
+        ws.onerror = (e) => {
+            console.log('⚠️ Error WebSocket:', e.message);
+            setServerStatus('Error WebSocket:', e.message)
+            ws.close(); // fuerza reconexión
+            setServerConnected(false)
+        };
+    };
 
 
 
@@ -65,12 +115,21 @@ const Home = () => {
 
     return (
         <View style={s.container}>
+            <ServerModal
+                setServerModalVisible={setServerModalVisible}
+                serverModalVisible={serverModalVisible}
+                serverIP={serverIP}
+                setServerIP={setServerIP}
+                serverConnected={serverConnected}
+                setServerConnected={setServerConnected}
+                serverStatus={serverStatus}
+            />
 
             <View style={s.information}>
                 <CurrentBrightness brightness={brightness} />
                 <CurrentBattery />
-                <IconButton icon={"wifi-off"} size={25} iconColor='rgb(50,50,50)' rippleColor={"red"} onPress={()=>{}} />
-                    {/* wifi-off / wifi-sync */}
+                <IconButton icon={serverConnected ? "access-point" : "access-point-off"} size={25} iconColor={serverConnected ? "rgb(0,70,0)" : "rgb(70,0,0)"} rippleColor={"gray"} onPress={() => { setServerModalVisible(!serverModalVisible) }} />
+                {/* wifi-off / wifi-sync */}
             </View>
 
             <Buttons brightness={brightness} setBrightness={setBrightness} />
@@ -98,15 +157,15 @@ const s = StyleSheet.create({
         // display:"flex",
         // alignItems:"stretch",
     },
-    information:{
+    information: {
         position: "absolute",
         top: 0,
         right: 0,
-        display:"flex",
-        flexDirection:"column",
-        justifyContent:"flex-end",
-        alignItems:"flex-end",
-        paddingHorizontal:3,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
+        paddingHorizontal: 3,
     }
 
 })

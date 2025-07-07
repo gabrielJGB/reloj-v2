@@ -54,14 +54,14 @@ const Weather = ({selectedDayIndex, setSelectedDayIndex}) => {
             setLoadingCurrent(true)
             getCity()
                 .then(city => {
-                    console.log("saved:", selectedCity)
-                    console.log("Fetching current weather... ", new Date());
+                    // console.log("saved:", selectedCity)
+                    // console.log("Fetching current weather... ", new Date());
                     const nowUrl = `https://meteobahia.com.ar/scripts/xml/now-${city.code}.xml?_=${new Date().getTime()}`
                     setLoadingCurrent(true)
                     fetchXML(nowUrl)
                         .then(res => {
                             setCurrentForecast(res.response)
-                            console.log("res.response: ", res.response)
+                            // console.log("res.response: ", res.response)
                         })
                         .finally(() => { setLoadingCurrent(false) })
 

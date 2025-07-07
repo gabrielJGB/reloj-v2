@@ -90,7 +90,8 @@ const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayInde
                         <IconButton
                             icon={"chevron-left"}
                             size={ICON_SIZE}
-                            iconColor={"white"}
+                            iconColor={selectedDayIndex === 0 ? "transparent" : "white"}
+                            rippleColor={"white"}
                             onPress={() => { setSelectedDayIndex(prev => prev > 0 ? prev - 1 : 0) }} />
 
 
@@ -104,7 +105,8 @@ const DayModalOverview = ({ dayModalVisible, setDayModalVisible, selectedDayInde
                         <IconButton
                             icon={"chevron-right"}
                             size={ICON_SIZE}
-                            iconColor={"white"}
+                            iconColor={selectedDayIndex === 11 ? "transparent" : "white"}
+                            rippleColor={"white"}
                             onPress={() => { setSelectedDayIndex(prev => prev < 11 ? prev + 1 : prev) }} />
 
                         {/* <IconButton icon={"close-box"} iconColor="white" size={35} onPress={() => { setDayModalVisible(!dayModalVisible) }} /> */}
