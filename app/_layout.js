@@ -4,7 +4,8 @@ import { Stack, useFocusEffect } from 'expo-router'
 import { DarkTheme, NavigationContainer, ThemeProvider } from '@react-navigation/native'
 import * as NavigationBar from 'expo-navigation-bar';
 import { useEffect, useState } from 'react'
-
+import { onValue, ref, set } from 'firebase/database';
+import { db } from '../firebase.js';
 
 const Layout = () => {
 
@@ -27,6 +28,21 @@ const Layout = () => {
         hideUI()
 
     }, []);
+
+
+    // useEffect(() => {
+    //     const enviarBrillo = (value) => {
+            
+    //         set(ref(db, 'brillo'), { value: value / 100 });
+    //     };
+
+    //     enviarBrillo(20)
+
+    // }, [])
+
+
+
+
 
     return (
 

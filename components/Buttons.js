@@ -45,7 +45,7 @@ const s = StyleSheet.create({
 
     },
     brightnessButton: {
-        borderWidth:1,
+        // borderWidth:1,
         // borderColor:"rgba(120,0,0,0.2)",
         width: "47%",
         borderRadius: 0,
