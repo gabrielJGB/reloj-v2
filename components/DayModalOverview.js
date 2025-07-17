@@ -4,6 +4,7 @@ import { Icon, IconButton } from 'react-native-paper'
 import { LineChart } from 'react-native-gifted-charts'
 import { Image } from 'expo-image'
 import { findMinMaxTemperature } from '../utils/helpers'
+import { mainColor } from '../data/constants'
 
 
 
@@ -209,7 +210,7 @@ const s = StyleSheet.create({
     },
     text: {
         fontFamily: 'digital-7-mono-italic',
-        color: "red",
+        color: mainColor,
         textShadowColor: 'red',
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 17,

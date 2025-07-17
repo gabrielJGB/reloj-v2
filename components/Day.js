@@ -1,6 +1,7 @@
 import { Alert, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native'
 import { Icon, Dialog, TouchableRipple } from 'react-native-paper'
 import { findMinMaxTemperature, sumPrecipitation } from '../utils/helpers'
+import { mainColor } from '../data/constants'
 
 
 const Day = ({ dailyForecast,setSelectedDayIndex, setSelectedDayForecast,setDayModalVisible, index }) => {
@@ -76,8 +77,8 @@ const s = StyleSheet.create({
     },
     text: {
         fontFamily: 'digital-7-mono-italic',
-        color: "red",
-        textShadowColor: 'red',
+        color: mainColor,
+        textshadowColor: mainColor,
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 17,
     },

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image, Platform, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native'
 import WebView from 'react-native-webview'
+import { mainColor } from '../data/constants'
 
 const IMG_SIZE = 62
 
@@ -50,7 +51,7 @@ const CurrentWeather = ({ modalVisible, setModalVisible, currentForecast }) => {
                     </View>
                     <View style={s.tempCont}>
                         <Text style={[s.temp, { fontSize, lineHeight }]}>{Math.round(temp)}</Text>
-                        <Text style={{ fontSize: 85, lineHeight: 70, color: "red", textShadowColor: 'red' }}>°</Text>
+                        <Text style={{ fontSize: 85, lineHeight: 70, color: mainColor, textshadowColor: mainColor }}>°</Text>
                     </View>
                 </View>
 
@@ -76,9 +77,9 @@ const s = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 0,
+        gap: 10,
         paddingLeft: 5,
-        // backgroundColor:"orange"
+
     },
     webviewContainer: {
         minHeight: 90,
@@ -100,10 +101,10 @@ const s = StyleSheet.create({
     },
     temp: {
         fontFamily: 'digital-7-mono-italic',
-        textShadowColor: 'red',
+        textshadowColor: mainColor,
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 17,
-        color: "red",
+        color: mainColor,
         
     },
     condition: {
@@ -111,7 +112,7 @@ const s = StyleSheet.create({
         fontSize: 11,
         fontFamily: 'Arial',
         paddingLeft: 12,
-        color: "red",
+        color: mainColor,
         textAlign: "left"
     },
     conditionContainer:{

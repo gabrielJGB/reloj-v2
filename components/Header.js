@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useFocusEffect } from 'expo-router'
 import { formatDate } from '../utils/helpers'
+import { mainColor } from '../data/constants'
 
 const Header = () => {
 
@@ -38,12 +39,12 @@ const s = StyleSheet.create({
         backgroundColor: "black"
     },
     dateString: {
-        color: "red",
+        color: mainColor,
         fontSize: 42,
         fontFamily: 'digital-7-mono-italic',
         textAlign: "center",
         letterSpacing: 3,
-        textShadowColor: 'red',
+        textshadowColor: mainColor,
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 10
     },

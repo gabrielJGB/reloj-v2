@@ -11,6 +11,7 @@ import CurrentBattery from '../components/CurrentBattery';
 import { IconButton } from 'react-native-paper';
 import { onValue, ref } from 'firebase/database';
 import { db } from '../firebase';
+import DeviceInfo from '../components/DeviceInfo';
 
 
 const Home = () => {
@@ -79,6 +80,7 @@ const Home = () => {
             <View style={s.information}>
                 <CurrentBrightness brightness={brightness} />
                 <CurrentBattery />
+                {/* <DeviceInfo setBrightness={setBrightness}/> */}
             </View>
 
             <Buttons brightness={brightness} setBrightness={setBrightness} />

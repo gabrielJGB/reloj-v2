@@ -8,6 +8,7 @@ import { fetchXML } from '../utils/fetch'
 import { agruparPorDia, formatearFecha } from '../utils/helpers'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DayModalOverview from './DayModalOverview'
+import { mainColor } from '../data/constants'
 
 const Weather = ({selectedDayIndex, setSelectedDayIndex}) => {
 
@@ -207,22 +208,22 @@ const s = StyleSheet.create({
     selectButton: {
         textAlign: "center",
         fontFamily: 'digital-7-mono-italic',
-        textShadowColor: 'red',
+        textshadowColor: mainColor,
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 17,
-        color: "red",
+        color: mainColor,
         fontSize: 28,
         padding: 22,
     },
     error: {
-        color: "red",
+        color: mainColor,
         textAlign: "center",
         fontSize: 13,
         fontFamily: 'Arial',
 
     },
     loading: {
-        color: "red",
+        color: mainColor,
         fontSize: 12,
         textAlign: "center",
         width: 105

@@ -6,6 +6,7 @@ import { getCity, saveCity } from '../utils/storage';
 import { useFocusEffect } from 'expo-router';
 import { fetchXML } from '../utils/fetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { mainColor } from '../data/constants';
 
 const SelectCityModal = ({ modalVisible, setModalVisible, selectedCity, setSelectedCity, loading, setLoading, currentForecast, setCurrentForecast }) => {
 
@@ -73,7 +74,7 @@ const SelectCityModal = ({ modalVisible, setModalVisible, selectedCity, setSelec
                         ref={textInput}
                         label="Buscar una ciudad"
                         value={text.toLowerCase()}
-                        activeUnderlineColor={"red"}
+                        activeUnderlineColor={mainColor}
                         style={{ backgroundColor: "#121212", borderTopEndRadius: 10, borderTopStartRadius: 10 }}
                         textColor='white'
                         placeholderTextColor='white'
@@ -97,7 +98,7 @@ const SelectCityModal = ({ modalVisible, setModalVisible, selectedCity, setSelec
                                 results.map((result, i) => (
                                     <TouchableRipple
                                         key={i}
-                                        rippleColor="red"
+                                        rippleColor={mainColor}
                                         unstable_pressDelay={80}
                                         borderless
                                         style={{ borderRadius: 7, paddingTop: !selectedCity ? 5 : 0 }}
